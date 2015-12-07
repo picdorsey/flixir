@@ -18,15 +18,18 @@ This assets path property is prefixed to all relevant assets
 
 Default: `src`
 
-##### Public Path `flixir.config.publicPath`: 
+
+##### Public Path `flixir.config.publicPath`
 Much like assets path, this public path property is prefixed to any paths in your application, that point to the public dir. It's useful, when a server requires a unique public path.
 
 Default: `public/assets`
+
 
 ##### Sass Source Folder `flixir.config.sass.folder`
 Location of the SASS/SCSS Files
 
 Default: `scss`
+
 
 ##### JS Source Folder `flixir.config.js.folder`
 Location of the Javascript Files
@@ -39,11 +42,14 @@ Default: `scss`
 ##### Run all taks
 `gulp`
 
+
 ##### Run all tasks and minify all CSS and Javascript
 `gulp --production`
 
+
 ##### Watchin Assets For Changes
 `gulp watch`
+
 
 ### Working With Sass
 
