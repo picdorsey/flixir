@@ -25,7 +25,7 @@ Much like assets path, this public path property is prefixed to any paths in you
 Default: `public/assets`
 
 
-##### Sass Source Folder `flixir.config.sass.folder`
+##### Sass Source Folder `flixir.config.css.sass.folder`
 Location of the SASS/SCSS Files
 
 Default: `scss`
