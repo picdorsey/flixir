@@ -66,7 +66,6 @@ mix.sass([
    'style.scss',
    'style2.scss'
 ], 'public/assets/css');
-});
 ```
 
 ### Working With Scripts
