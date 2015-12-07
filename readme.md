@@ -9,6 +9,10 @@ A fork of [Laravel Elixir](https://github.com/laravel/Elixir) used for our proje
 * Browserify
 * Autoprefixer
 
+## Install
+
+`npm install flixir`
+
 ## Documentation
 
 ### Defaults
