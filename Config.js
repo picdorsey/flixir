@@ -396,9 +396,11 @@ var config = {
 
     browserSync: {
         // http://www.browsersync.io/docs/options/
-        proxy: 'homestead.app',
         reloadOnRestart : true,
-        notify: true,
+        notify: false,
+        server: {
+            baseDir: 'public'
+        }
     },
 
 };
