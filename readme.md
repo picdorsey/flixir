@@ -2,7 +2,7 @@
 
 ## Introduction
 
-A fork of [Laravel Flixir](https://github.com/laravel/Flixir) used for our projects.
+A fork of [Laravel Elixir](https://github.com/laravel/Elixir) used for our projects.
 
 ## Features
 * Sass
