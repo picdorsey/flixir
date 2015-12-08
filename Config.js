@@ -199,7 +199,7 @@ var config = {
             pluginOptions: {
                 outputStyle: gutils.env.production
                     ? 'compressed'
-                    : 'nested',
+                    : 'expanded',
                 precision: 10
             }
         }
