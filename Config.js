@@ -197,9 +197,7 @@ var config = {
 
             // https://github.com/sass/node-sass#options
             pluginOptions: {
-                outputStyle: gutils.env.production
-                    ? 'compressed'
-                    : 'expanded',
+                outputStyle: 'expanded',
                 precision: 10
             }
         }

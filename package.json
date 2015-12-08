@@ -1,6 +1,6 @@
 {
   "name": "flixir",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Frunt Flixir",
   "main": "index.js",
   "scripts": {
