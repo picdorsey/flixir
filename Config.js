@@ -174,11 +174,9 @@ var config = {
          |
          */
 
-        minifyCss: {
-            // https://github.com/jakubpawlowicz/clean-css#how-to-use-clean-css-api
-            pluginOptions: {
-                processImport: false
-            }
+        cssnano: {
+            // http://cssnano.co/options
+            pluginOptions: {}
         },
 
         /*
