@@ -1,6 +1,7 @@
 var p = require('path');
 var gutils = require('gulp-util');
 
+var production = gutils.env.production || process.env.NODE_ENV === 'production';
 
 /*
  |----------------------------------------------------------------
@@ -37,13 +38,13 @@ var config = {
      | Production Mode
      |----------------------------------------------------------------
      |
-     | Flixir will trigger certain actions, dependent upon this flag.
+     | Elixir will trigger certain actions, dependent upon this flag.
      | You may "turn on" this mode by triggering "gulp --production".
      | This will enable such things, like CSS and JS minification.
      |
      */
 
-    production: !! gutils.env.production,
+    production: production,
 
     /*
      |----------------------------------------------------------------
@@ -176,7 +177,9 @@ var config = {
 
         cssnano: {
             // http://cssnano.co/options
-            pluginOptions: {}
+            pluginOptions: {
+                safe: true
+            }
         },
 
         /*
@@ -195,7 +198,9 @@ var config = {
 
             // https://github.com/sass/node-sass#options
             pluginOptions: {
-                outputStyle: 'expanded',
+                outputStyle: production
+                    ? 'compressed'
+                    : 'nested',
                 precision: 10
             }
         }
@@ -249,6 +254,24 @@ var config = {
 
         /*
          |----------------------------------------------------------------
+         | UglifyJS Parser/Compressor/Beautifier
+         |----------------------------------------------------------------
+         |
+         | UglifyJS is a JavaScript parser/compressor/beautifier.
+         | It'll minify your JavaScript with ease and has an option to
+         | mangle your code.
+         |
+         */
+
+        uglify: {
+            options: {
+                compress: {
+                    drop_console: true
+                }
+            }
+        },
+        /*
+         |----------------------------------------------------------------
          | Browserify Compilation
          |----------------------------------------------------------------
          |
@@ -260,7 +283,10 @@ var config = {
 
         browserify: {
             // https://www.npmjs.com/package/browserify#usage
-            options: {},
+            options: {
+                cache: {},
+                packageCache: {}
+            },
 
             plugins: [],
 
@@ -298,23 +324,6 @@ var config = {
             }
         },
 
-        /*
-         |----------------------------------------------------------------
-         | CoffeeScript Compilation
-         |----------------------------------------------------------------
-         |
-         | If you prefer CoffeeScript compilation, this object stores
-         | the defaults for the Coffee folder name - not the path.
-         | When used, this value will be affixed to assetsPath.
-         |
-         */
-
-        coffee: {
-            folder: 'coffee',
-
-            // https://github.com/wearefractal/gulp-coffee#options
-            options: {}
-        }
     },
 
     testing: {
@@ -324,43 +333,29 @@ var config = {
          | PHPUnit Autotesting
          |----------------------------------------------------------------
          |
-         | Want to automatically trigger your PHPUnit tests. Not a prob!
-         | This object stores the defaults for the path to your tests
-         | folder, as well as any "gulp-phpunit" specific options.
+         | Want to automatically trigger your PHPUnit tests. Not a problem.
+         | This object stores your default PHPUnit directory path. For a
+         | custom command, you may use the second arg to mix.phpUnit.
          |
          */
 
         phpUnit: {
-            path: 'tests',
-
-            // https://www.npmjs.com/package/gulp-phpunit#api
-            options: {
-                debug: true,
-                notify: true,
-                configurationFile: 'phpunit.xml'
-            }
+            path: 'tests'
         },
-
 
         /*
          |----------------------------------------------------------------
          | PHPSpec Autotesting
          |----------------------------------------------------------------
          |
-         | Want to automatically trigger your PHPSpec tests. Not a prob!
-         | This object stores the defaults for the path to your specs
-         | folder, as well as any "gulp-phpspec" specific options.
+         | Want to automatically trigger your PHPSpec tests. Not a problem.
+         | This object stores your default PHPSpec directory path. For a
+         | custom command, you may use the second arg to mix.phpSpec.
          |
          */
 
         phpSpec: {
-            path: 'spec',
-
-            // https://www.npmjs.com/package/gulp-phpspec#api
-            options: {
-                verbose: 'v',
-                notify: true
-            }
+            path: 'spec'
         }
     },
 
@@ -393,7 +388,7 @@ var config = {
     browserSync: {
         // http://www.browsersync.io/docs/options/
         reloadOnRestart : true,
-        notify: false,
+        notify: true,
         server: {
             baseDir: 'public'
         }

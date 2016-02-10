@@ -4,7 +4,6 @@ var Flixir = require('../index');
 var $ = Flixir.Plugins;
 var config = Flixir.config;
 
-
 /*
  |----------------------------------------------------------------
  | JavaScript File Concatenation
@@ -26,7 +25,6 @@ Flixir.extend('scripts', function(scripts, output, baseDir) {
     .ignore(paths.output.path);
 });
 
-
 Flixir.extend('scriptsIn', function(baseDir, output) {
     var paths = prepGulpPaths('**/*.js', baseDir, output);
 
@@ -36,7 +34,6 @@ Flixir.extend('scriptsIn', function(baseDir, output) {
     .watch(paths.src.path)
     .ignore(paths.output.path);
 });
-
 
 Flixir.extend('babel', function(scripts, output, baseDir, options) {
     var paths = prepGulpPaths(scripts, baseDir, output);
@@ -50,11 +47,10 @@ Flixir.extend('babel', function(scripts, output, baseDir, options) {
     .ignore(paths.output.path);
 });
 
-
 /**
  * Trigger the Gulp task logic.
  *
- * @param {object}      paths
+ * @param {GulpPaths}   paths
  * @param {object|null} babel
  */
 var gulpTask = function(paths, babel) {
@@ -70,20 +66,20 @@ var gulpTask = function(paths, babel) {
             new Flixir.Notification().error(e, 'Babel Compilation Failed!');
             this.emit('end');
         })
-        .pipe($.if(config.production, $.uglify({compress: { drop_console: true }})))
+        .pipe($.if(config.production, $.uglify(config.js.uglify.options)))
         .pipe($.if(config.sourcemaps, $.sourcemaps.write('.')))
         .pipe(gulp.dest(paths.output.baseDir))
         .pipe(new Flixir.Notification('Scripts Merged!'))
     );
 };
 
-
 /**
  * Prep the Gulp src and output paths.
  *
- * @param {string|array} src
- * @param {string|null}  baseDir
- * @param {string|null}  output
+ * @param  {string|Array} src
+ * @param  {string|null}  baseDir
+ * @param  {string|null}  output
+ * @return {GulpPaths}
  */
 var prepGulpPaths = function(src, baseDir, output) {
     return new Flixir.GulpPaths()

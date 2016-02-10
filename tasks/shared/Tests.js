@@ -3,24 +3,23 @@ var Flixir = require('../../index');
 
 var notify = new Flixir.Notification();
 
-
-module.exports = function(options) {
-    new Flixir.Task(options.name, function() {
-        this.log(options.src);
+module.exports = function(name, src, command) {
+    new Flixir.Task(name, function(error) {
+        Flixir.Log.heading('Triggering ' + name + ': ' + command);
 
         return (
             gulp
-            .src(options.src)
-            .pipe(options.plugin('', options.pluginOptions))
+            .src('')
+            .pipe(Flixir.Plugins.shell(command))
             .on('error', function(e) {
-                notify.forFailedTests(e, options.name);
+                notify.forFailedTests(e, name);
 
                 this.emit('end');
             })
-            .pipe(notify.forPassedTests(options.name))
+            .pipe(notify.forPassedTests(name))
         );
     })
-    .watch(options.src, 'tdd')
+    .watch(src)
     .watch(Flixir.config.appPath + '/**/*.php', 'tdd')
-    .watch('./resources/views/**/*.php', 'tdd')
+    .watch(Flixir.config.viewPath +'/**/*.php', 'tdd');
 };
