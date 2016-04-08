@@ -1,9 +1,9 @@
-var gulp = require('gulp');
-var Flixir = require('../../index');
+import gulp from 'gulp';
+import Flixir from '../../index';
 
-var notify = new Flixir.Notification();
+const notify = new Flixir.Notification();
 
-module.exports = function(name, src, command) {
+export default function(name, src, command) {
     new Flixir.Task(name, function(error) {
         Flixir.Log.heading('Triggering ' + name + ': ' + command);
 

@@ -1,6 +1,5 @@
-var gulp = require('gulp');
-var Flixir = require('../index');
-
+import gulp from 'gulp';
+import Flixir from './../';
 
 /*
  |----------------------------------------------------------------
@@ -14,9 +13,7 @@ var Flixir = require('../index');
  */
 
 Flixir.extend('task', function(name, watcher) {
-    var task = new Flixir.Task('task', function() {
-        return gulp.start(name);
-    });
+    const task = new Flixir.Task('task', () => gulp.start(name));
 
     if (watcher) {
         task.watch(watcher);

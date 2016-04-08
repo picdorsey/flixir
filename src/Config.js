@@ -1,7 +1,8 @@
-var p = require('path');
-var gutils = require('gulp-util');
+import p from 'path';
+import gutils from 'gulp-util';
 
-var production = gutils.env.production || process.env.NODE_ENV === 'production';
+const production = gutils.env.production ||
+                   process.env.NODE_ENV === 'production';
 
 /*
  |----------------------------------------------------------------
@@ -18,33 +19,20 @@ var production = gutils.env.production || process.env.NODE_ENV === 'production';
  |
  */
 
-var config = {
-
-    /*
-     |----------------------------------------------------------------
-     | Tasks
-     |----------------------------------------------------------------
-     |
-     | The tasks array stores all tasks that should be executed each
-     | time you trigger Gulp from the command line. Generally you
-     | won't need to modify this but it's an option if needed.
-     |
-     */
-
-    tasks: [],
+const config = {
 
     /*
      |----------------------------------------------------------------
      | Production Mode
      |----------------------------------------------------------------
      |
-     | Elixir will trigger certain actions, dependent upon this flag.
-     | You may "turn on" this mode by triggering "gulp --production".
-     | This will enable such things, like CSS and JS minification.
+     | Flixir will trigger certain actions, dependent upon this flag.
+     | You may enable this mode by triggering "gulp --production",
+     | enabling things like CSS and JS minification. EasyPeasy!
      |
      */
 
-    production: production,
+    production,
 
     /*
      |----------------------------------------------------------------
@@ -84,6 +72,32 @@ var config = {
      */
 
     appPath: 'app',
+
+    /*
+     |----------------------------------------------------------------
+     | View Path
+     |----------------------------------------------------------------
+     |
+     | Very likely, you will never need/want to modify this property.
+     | However, for the instances where your app's views directory
+     | is located in a different spot, please modify as needed.
+     |
+     */
+
+    viewPath: 'resources/views',
+
+    /*
+     |----------------------------------------------------------------
+     | Notifications
+     |----------------------------------------------------------------
+     |
+     | As a convenience, Flixir will, when available, automatically
+     | display OS notifications upon the completion of any task.
+     | But of course you're free to disable this, if needed.
+     |
+     */
+
+    notifications: true,
 
     /*
      |----------------------------------------------------------------
@@ -175,13 +189,9 @@ var config = {
          |
          */
 
-        cssnano: {
-            // http://cssnano.co/options
-            pluginOptions: {
-                discardComments: { removeAll: true },
-                autoprefixer: false,
-                safe: true
-            }
+        minifier: {
+            // https://github.com/jakubpawlowicz/clean-css#how-to-use-clean-css-api
+            pluginOptions: {}
         },
 
         /*
@@ -272,6 +282,7 @@ var config = {
                 }
             }
         },
+
         /*
          |----------------------------------------------------------------
          | Browserify Compilation
@@ -310,6 +321,7 @@ var config = {
                     // https://www.npmjs.com/package/partialify
                     options: {}
                 },
+
                 {
                     name: 'vueify',
 
@@ -324,8 +336,7 @@ var config = {
                 // https://www.npmjs.com/package/watchify#usage
                 options: {}
             }
-        },
-
+        }
     },
 
     testing: {
@@ -394,10 +405,9 @@ var config = {
         server: {
             baseDir: 'public'
         }
-    },
+    }
 
 };
-
 
 /**
  * Fetch a config item, using a string dot-notation.
@@ -419,12 +429,9 @@ config.get = function(path) {
         basePath = config[segments.shift()+'Path'];
     }
 
-    segments.forEach(function(segment) {
-        current = current[segment];
-    });
+    segments.forEach(segment => current = current[segment]);
 
     return p.join(basePath, current);
 };
 
-
-module.exports = config;
+export default config;

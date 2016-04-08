@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var GulpPaths = require('../../index').GulpPaths;
+var GulpPaths = require('./../../src/index').GulpPaths;
 
 describe('Gulp Paths', function() {
     var paths;

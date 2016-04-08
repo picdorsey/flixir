@@ -1,9 +1,7 @@
-var gulp    = require('gulp');
-var compile = require('./shared/Css');
-var Flixir = require('../index');
+import compile from './shared/Css';
+import Flixir from './../';
 
-var config = Flixir.config;
-
+const config = Flixir.config;
 
 /*
  |----------------------------------------------------------------
@@ -16,8 +14,8 @@ var config = Flixir.config;
  |
  */
 
-var gulpTask = function(src, output, options) {
-    var paths = prepGulpPaths(src, output);
+const gulpTask = function(src, output, options) {
+    const paths = prepGulpPaths(src, output);
 
     new Flixir.Task('sass', function() {
         return compile({
@@ -44,15 +42,14 @@ Flixir.extend('rubySass', function() {
     gulpTask.apply(this, arguments);
 });
 
-
 /**
  * Prep the Gulp src and output paths.
  *
- * @param  {string|array} src
+ * @param  {string|Array} src
  * @param  {string|null}  output
- * @return {object}
+ * @return {GulpPaths}
  */
-var prepGulpPaths = function(src, output) {
+const prepGulpPaths = function(src, output) {
     return new Flixir.GulpPaths()
         .src(src, config.get('assets.css.sass.folder'))
         .output(output || config.get('public.css.outputFolder'), 'app.css');

@@ -1,8 +1,8 @@
-var gulp = require('gulp');
-var Flixir = require('../index');
+import gulp from 'gulp';
+import Flixir from './../';
 
-var $ = Flixir.Plugins;
-var config = Flixir.config;
+const $ = Flixir.Plugins;
+const config = Flixir.config;
 
 /*
  |----------------------------------------------------------------
@@ -16,7 +16,7 @@ var config = Flixir.config;
  */
 
 Flixir.extend('scripts', function(scripts, output, baseDir) {
-    var paths = prepGulpPaths(scripts, baseDir, output);
+    const paths = prepGulpPaths(scripts, baseDir, output);
 
     new Flixir.Task('scripts', function() {
         return gulpTask.call(this, paths);
@@ -25,8 +25,9 @@ Flixir.extend('scripts', function(scripts, output, baseDir) {
     .ignore(paths.output.path);
 });
 
+
 Flixir.extend('scriptsIn', function(baseDir, output) {
-    var paths = prepGulpPaths('**/*.js', baseDir, output);
+    const paths = prepGulpPaths('**/*.js', baseDir, output);
 
     new Flixir.Task('scriptsIn', function() {
         return gulpTask.call(this, paths);
@@ -35,11 +36,12 @@ Flixir.extend('scriptsIn', function(baseDir, output) {
     .ignore(paths.output.path);
 });
 
+
 Flixir.extend('babel', function(scripts, output, baseDir, options) {
-    var paths = prepGulpPaths(scripts, baseDir, output);
+    const paths = prepGulpPaths(scripts, baseDir, output);
 
     new Flixir.Task('babel', function() {
-        var babelOptions = options || config.js.babel.options;
+        const babelOptions = options || config.js.babel.options;
 
         return gulpTask.call(this, paths, babelOptions);
     })
@@ -53,7 +55,7 @@ Flixir.extend('babel', function(scripts, output, baseDir, options) {
  * @param {GulpPaths}   paths
  * @param {object|null} babel
  */
-var gulpTask = function(paths, babel) {
+const gulpTask = function(paths, babel) {
     this.log(paths.src, paths.output);
 
     return (
@@ -81,7 +83,7 @@ var gulpTask = function(paths, babel) {
  * @param  {string|null}  output
  * @return {GulpPaths}
  */
-var prepGulpPaths = function(src, baseDir, output) {
+const prepGulpPaths = function(src, baseDir, output) {
     return new Flixir.GulpPaths()
         .src(src, baseDir || config.get('assets.js.folder'))
         .output(output || config.get('public.js.outputFolder'), 'all.js');

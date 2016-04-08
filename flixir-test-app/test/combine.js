@@ -2,12 +2,12 @@ var fs     = require('fs');
 var gulp   = require('gulp');
 var remove = require('rimraf');
 var should = require('chai').should();
-var Flixir = require('../../index');
+var Flixir = require('../../src/');
 
 describe('Combine Task', function() {
 
     beforeEach(() => {
-        Flixir.tasks = Flixir.config.tasks = [];
+        Flixir.tasks.empty();
     });
 
     it('combines a given array of files.', done => {

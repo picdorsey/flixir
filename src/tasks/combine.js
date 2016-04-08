@@ -1,12 +1,11 @@
-var gulp   = require('gulp');
-var Flixir = require('../index');
+import gulp from 'gulp';
+import Flixir from './../';
 
-var $ = Flixir.Plugins;
-var config = Flixir.config;
+const $ = Flixir.Plugins;
 
 /*
  |----------------------------------------------------------------
- | File Concaenation
+ | File Concatenation
  |----------------------------------------------------------------
  |
  | This task will concatenate an array of files. Nothing more
@@ -16,7 +15,7 @@ var config = Flixir.config;
  */
 
 Flixir.extend('combine', function(src, output, baseDir) {
-    var paths = prepGulpPaths(src, baseDir, output);
+    const paths = prepGulpPaths(src, baseDir, output);
 
     new Flixir.Task('combine', function() {
         this.log(paths.src, paths.output);
@@ -32,7 +31,6 @@ Flixir.extend('combine', function(src, output, baseDir) {
     .ignore(paths.output.path);
 });
 
-
 /**
  * Prep the Gulp src and output paths.
  *
@@ -41,7 +39,7 @@ Flixir.extend('combine', function(src, output, baseDir) {
  * @param  {string|null}  output
  * @return {GulpPaths}
  */
-var prepGulpPaths = function(src, baseDir, output) {
+const prepGulpPaths = function(src, baseDir, output) {
     return new Flixir.GulpPaths()
         .src(src, baseDir || '')
         .output(output);

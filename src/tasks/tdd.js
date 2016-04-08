@@ -1,6 +1,5 @@
-var gulp = require('gulp');
-var Flixir = require('../index');
-
+import gulp from 'gulp';
+import Flixir from './../';
 
 /*
  |----------------------------------------------------------------
@@ -17,10 +16,6 @@ gulp.task('tdd', function() {
     new Flixir.Log.message('Watching for tests...');
 
     Flixir.tasks
-        .filter(function(task) {
-            return task.category == 'tdd';
-        })
-        .forEach(function(task) {
-            gulp.watch(task.watchers, [task.name]);
-        });
+        .filter(task => task.category == 'tdd')
+        .forEach(task => gulp.watch(task.watchers, [task.name]));
 });

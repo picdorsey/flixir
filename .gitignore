@@ -3,3 +3,4 @@ node_modules/
 npm-debug.log
 
 flixir-test-app/public
+dist/

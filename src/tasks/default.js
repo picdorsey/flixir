@@ -1,7 +1,6 @@
-var gulp = require('gulp');
-var _ = require('underscore');
-var Flixir = require('../index');
-var inSequence = require('run-sequence');
+import gulp from 'gulp';
+import Flixir from './../';
+import inSequence from 'run-sequence';
 
 /*
  |----------------------------------------------------------------
@@ -15,5 +14,5 @@ var inSequence = require('run-sequence');
  */
 
 gulp.task('default', function() {
-    inSequence.apply(this, _.pluck(Flixir.tasks, 'name'));
+    inSequence.apply(this, Flixir.tasks.names());
 });

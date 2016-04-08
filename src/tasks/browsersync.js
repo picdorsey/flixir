@@ -1,10 +1,9 @@
-var gulp = require('gulp');
-var _ = require('underscore');
-var gutils = require('gulp-util');
-var Flixir = require('../index');
-var browserSync = require('browser-sync').create();
+import Flixir from './../';
 
-var config = Flixir.config;
+const config = Flixir.config;
+let _;
+let gutils;
+let browserSync;
 
 /*
  |----------------------------------------------------------------
@@ -18,13 +17,15 @@ var config = Flixir.config;
  */
 
 Flixir.extend('browserSync', function (options) {
-    options = _.extend(config.browserSync, {
+    loadPlugins();
+
+    options = _.extend({
         files: [
             config.appPath + '/**/*.php',
             config.get('public.css.outputFolder') + '/**/*.css',
             config.get('public.js.outputFolder') + '/**/*.js',
             config.get('public.versioning.buildFolder') + '/rev-manifest.json',
-            'resources/views/**/*.php'
+            config.viewPath +'/**/*.php'
         ],
         watchOptions: {
             usePolling: true
@@ -37,7 +38,7 @@ Flixir.extend('browserSync', function (options) {
                 }
             }
         }
-    }, options);
+    }, config.browserSync, options);
 
     // Browsersync will only run during `gulp watch`.
     if (gutils.env._.indexOf('watch') > -1) {
@@ -46,3 +47,12 @@ Flixir.extend('browserSync', function (options) {
 
     new Flixir.Task('browserSync', function () {}).watch();
 });
+
+/**
+ * Load the required Gulp plugins on demand.
+ */
+const loadPlugins = function () {
+    _ = require('underscore');
+    gutils = require('gulp-util');
+    browserSync = require('browser-sync').create();
+};

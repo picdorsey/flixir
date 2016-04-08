@@ -1,8 +1,7 @@
-var gulp = require('gulp');
-var Flixir = require('../index');
+import gulp from 'gulp';
+import Flixir from './../';
 
-var $ = Flixir.Plugins;
-
+const $ = Flixir.Plugins;
 
 /*
  |----------------------------------------------------------------
@@ -16,14 +15,14 @@ var $ = Flixir.Plugins;
  */
 
 Flixir.extend('copy', function(src, output) {
-    var paths = new Flixir.GulpPaths().src(src).output(output);
+    const paths = new Flixir.GulpPaths().src(src).output(output);
 
     new Flixir.Task('copy', function() {
         this.log(paths.src, paths.output);
 
         return (
             gulp
-            .src(paths.src.path)
+            .src(paths.src.path, { dot: true })
             .pipe($.if(! paths.output.isDir, $.rename(paths.output.name)))
             .pipe(gulp.dest(paths.output.baseDir))
         );

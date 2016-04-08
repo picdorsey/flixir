@@ -1,9 +1,7 @@
-var gulp   = require('gulp');
-var Flixir = require('../index');
+import Flixir from './../';
+import runTests from './shared/Tests.js';
 
-var config = Flixir.config;
-var runTests = require('./shared/Tests.js');
-
+const config = Flixir.config;
 
 /*
  |----------------------------------------------------------------

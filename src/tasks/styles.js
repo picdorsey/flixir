@@ -1,9 +1,10 @@
-var gulp = require('gulp');
-var Flixir = require('../index');
+import gulp from 'gulp';
+import Flixir from './../';
 
-var $ = Flixir.Plugins;
-var config = Flixir.config;
-
+const $ = Flixir.Plugins;
+const config = Flixir.config;
+let CleanCSS;
+let map;
 
 /*
  |----------------------------------------------------------------
@@ -17,7 +18,9 @@ var config = Flixir.config;
  */
 
 Flixir.extend('styles', function(styles, output, baseDir) {
-    var paths = prepGulpPaths(styles, baseDir, output);
+    const paths = prepGulpPaths(styles, baseDir, output);
+
+    loadPlugins();
 
     new Flixir.Task('styles', function() {
         return gulpTask.call(this, paths);
@@ -28,7 +31,7 @@ Flixir.extend('styles', function(styles, output, baseDir) {
 
 
 Flixir.extend('stylesIn', function(baseDir, output) {
-    var paths = prepGulpPaths('**/*.css', baseDir, output);
+    const paths = prepGulpPaths('**/*.css', baseDir, output);
 
     new Flixir.Task('stylesIn', function() {
         return gulpTask.call(this, paths);
@@ -37,13 +40,12 @@ Flixir.extend('stylesIn', function(baseDir, output) {
     .ignore(paths.output.path);
 });
 
-
 /**
  * Trigger the Gulp task logic.
  *
- * @param {object} paths
+ * @param {GulpPaths} paths
  */
-var gulpTask = function(paths) {
+const gulpTask = function(paths) {
     this.log(paths.src, paths.output);
 
     return (
@@ -51,22 +53,41 @@ var gulpTask = function(paths) {
         .src(paths.src.path)
         .pipe($.if(config.sourcemaps, $.sourcemaps.init()))
         .pipe($.concat(paths.output.name))
-        .pipe($.if(config.production, $.cssnano(config.css.cssnano.pluginOptions)))
+        .pipe($.if(config.production, minify()))
         .pipe($.if(config.sourcemaps, $.sourcemaps.write('.')))
         .pipe(gulp.dest(paths.output.baseDir))
         .pipe(new Flixir.Notification('Stylesheets Merged!'))
     );
 };
 
+/**
+ * Prepare the minifier instance.
+ */
+const minify = function () {
+    return map((buff, filename) => {
+        return new CleanCSS(config.css.minifier.pluginOptions)
+            .minify(buff.toString())
+            .styles;
+    });
+};
+
+/**
+ * Load the required Gulp plugins on demand.
+ */
+const loadPlugins = function () {
+    CleanCSS = require('clean-css');
+    map = require('vinyl-map');
+};
 
 /**
  * Prep the Gulp src and output paths.
  *
- * @param  {string|array} src
+ * @param  {string|Array} src
+ * @param  {string|null}  baseDir
  * @param  {string|null}  output
- * @return {object}
+ * @return {GulpPaths}
  */
-var prepGulpPaths = function(src, baseDir, output) {
+const prepGulpPaths = function(src, baseDir, output) {
     return new Flixir.GulpPaths()
         .src(src, baseDir || config.get('assets.css.folder'))
         .output(output || config.get('public.css.outputFolder'), 'all.css');

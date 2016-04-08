@@ -1,13 +1,13 @@
 var fs     = require('fs');
 var gulp   = require('gulp');
 var remove = require('rimraf');
-var Flixir = require('../../index');
+var Flixir = require('../../src/');
 
 
 describe('Scripts Task', function() {
 
     beforeEach(() => {
-        Flixir.tasks = Flixir.config.tasks = [];
+        Flixir.tasks.empty();
     });
 
     it('merges scripts together', function(done) {
