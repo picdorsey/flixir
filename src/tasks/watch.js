@@ -2,6 +2,7 @@ import gulp from 'gulp';
 import Flixir from './../';
 
 const batch = Flixir.Plugins.batch;
+const $ = Flixir.Plugins;
 
 /*
  |----------------------------------------------------------------
@@ -21,7 +22,7 @@ gulp.task('watch', function() {
         const batchOptions = Flixir.config.batchOptions;
 
         if (task.hasWatchers()) {
-            gulp.watch(task.watchers, { interval: 1000 }, batch(batchOptions, (events) => {
+            $.watch(task.watchers, batch(batchOptions, (events) => {
                 events.on('end', gulp.start(task.name));
             }));
         }
