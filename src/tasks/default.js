@@ -14,5 +14,9 @@ import inSequence from 'run-sequence';
  */
 
 gulp.task('default', function() {
-    inSequence.apply(this, Flixir.tasks.names());
+    const tasks = Flixir.tasks.names();
+
+    if (tasks.length) {
+        inSequence.apply(this, tasks);
+    }
 });
