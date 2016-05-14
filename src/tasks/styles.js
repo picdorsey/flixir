@@ -17,12 +17,12 @@ let map;
  |
  */
 
-Flixir.extend('styles', function(styles, output, baseDir) {
+Flixir.extend('styles', function (styles, output, baseDir) {
     const paths = prepGulpPaths(styles, baseDir, output);
 
     loadPlugins();
 
-    new Flixir.Task('styles', function() {
+    new Flixir.Task('styles', function () {
         return gulpTask.call(this, paths);
     })
     .watch(paths.src.path)
@@ -30,10 +30,10 @@ Flixir.extend('styles', function(styles, output, baseDir) {
 });
 
 
-Flixir.extend('stylesIn', function(baseDir, output) {
+Flixir.extend('stylesIn', function (baseDir, output) {
     const paths = prepGulpPaths('**/*.css', baseDir, output);
 
-    new Flixir.Task('stylesIn', function() {
+    new Flixir.Task('stylesIn', function () {
         return gulpTask.call(this, paths);
     })
     .watch(paths.src.path)
@@ -45,7 +45,7 @@ Flixir.extend('stylesIn', function(baseDir, output) {
  *
  * @param {GulpPaths} paths
  */
-const gulpTask = function(paths) {
+const gulpTask = function (paths) {
     this.log(paths.src, paths.output);
 
     return (
@@ -74,7 +74,7 @@ const minify = function () {
 /**
  * Load the required Gulp plugins on demand.
  */
-const loadPlugins = function () {
+function loadPlugins() {
     CleanCSS = require('clean-css');
     map = require('vinyl-map');
 };
@@ -87,7 +87,7 @@ const loadPlugins = function () {
  * @param  {string|null}  output
  * @return {GulpPaths}
  */
-const prepGulpPaths = function(src, baseDir, output) {
+function prepGulpPaths(src, baseDir, output) {
     return new Flixir.GulpPaths()
         .src(src, baseDir || config.get('assets.css.folder'))
         .output(output || config.get('public.css.outputFolder'), 'all.css');

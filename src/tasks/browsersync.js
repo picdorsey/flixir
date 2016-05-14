@@ -2,7 +2,6 @@ import Flixir from './../';
 
 const config = Flixir.config;
 let _;
-let gutils;
 let browserSync;
 
 /*
@@ -41,7 +40,7 @@ Flixir.extend('browserSync', function (options) {
     }, config.browserSync, options);
 
     // Browsersync will only run during `gulp watch`.
-    if (gutils.env._.indexOf('watch') > -1) {
+    if (Flixir.isWatching()) {
         browserSync.init(options);
     }
 
@@ -51,8 +50,7 @@ Flixir.extend('browserSync', function (options) {
 /**
  * Load the required Gulp plugins on demand.
  */
-const loadPlugins = function () {
+function loadPlugins() {
     _ = require('underscore');
-    gutils = require('gulp-util');
     browserSync = require('browser-sync').create();
 };

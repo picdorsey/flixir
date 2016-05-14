@@ -1,7 +1,4 @@
-import gulp from 'gulp';
 import Flixir from './../';
-
-const $ = Flixir.Plugins;
 
 /*
  |----------------------------------------------------------------
@@ -14,10 +11,10 @@ const $ = Flixir.Plugins;
  |
  */
 
-Flixir.extend('combine', function(src, output, baseDir) {
+Flixir.extend('combine', function (src, output, baseDir) {
     const paths = prepGulpPaths(src, baseDir, output);
 
-    new Flixir.Task('combine', function() {
+    new Flixir.Task('combine', function (gulp, $) {
         this.log(paths.src, paths.output);
 
         return (
@@ -39,7 +36,7 @@ Flixir.extend('combine', function(src, output, baseDir) {
  * @param  {string|null}  output
  * @return {GulpPaths}
  */
-const prepGulpPaths = function(src, baseDir, output) {
+ function prepGulpPaths(src, baseDir, output) {
     return new Flixir.GulpPaths()
         .src(src, baseDir || '')
         .output(output);

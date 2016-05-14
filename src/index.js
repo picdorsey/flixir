@@ -1,5 +1,6 @@
 import fs from 'fs';
 import _ from 'underscore';
+import gutils from 'gulp-util';
 
 /**
  * Flixir is a wrapper around Gulp.
@@ -21,6 +22,7 @@ const Flixir = function(recipe) {
 };
 
 Flixir.mixins       = {};
+Flixir.isWatching   = () => gutils.env._.indexOf('watch') > -1;
 Flixir.Log          = require('./Logger').default;
 Flixir.GulpPaths    = require('./GulpPaths').default;
 Flixir.config       = require('./Config').default;
@@ -28,16 +30,9 @@ Flixir.Plugins      = require('gulp-load-plugins')();
 Flixir.Task         = require('./Task').default(Flixir);
 Flixir.tasks        = new (require('./TaskCollection').default)();
 
-/**
- * Perform any last-minute initializations.
- */
-const init = function () {
-    if (! Flixir.config.notifications) {
-        process.env.DISABLE_NOTIFIER = true;
-    }
-
-    Flixir.Notification = require('./Notification').default;
-};
+Flixir.hooks   = { before: [], watch: [] };
+Flixir.onWatch = func => Flixir.hooks.watch.push(func);
+Flixir.before  = func => Flixir.hooks.before.push(func);
 
 /**
  * Register a new task with Flixir.
@@ -71,5 +66,16 @@ Flixir.setDefaultsFrom = function(file) {
         _.deepExtend(Flixir.config, overrides);
     }
 }('Flixir.json');
+
+/**
+ * Perform any last-minute initializations.
+ */
+const init = function () {
+    if (! Flixir.config.notifications) {
+        process.env.DISABLE_NOTIFIER = true;
+    }
+
+    Flixir.Notification = require('./Notification').default;
+};
 
 module.exports = Flixir;

@@ -21,12 +21,12 @@ let revReplace;
  |
  */
 
-Flixir.extend('version', function(src, buildPath) {
+Flixir.extend('version', function (src, buildPath) {
     const paths = prepGulpPaths(src, buildPath);
 
     loadPlugins();
 
-    new Flixir.Task('version', function() {
+    new Flixir.Task('version', function () {
         const files = vinylPaths();
         const manifest = paths.output.baseDir + '/rev-manifest.json';
 
@@ -70,7 +70,7 @@ Flixir.extend('version', function(src, buildPath) {
  * @param  {string|null}  buildPath
  * @return {GulpPaths}
  */
-const prepGulpPaths = function(src, buildPath) {
+function prepGulpPaths(src, buildPath) {
     src = Array.isArray(src) ? src : [src];
     buildPath = buildPath || Flixir.config.get('public.versioning.buildFolder')
 
@@ -95,7 +95,7 @@ const prepGulpPaths = function(src, buildPath) {
  * @param {string} buildPath
  * @param {string} manifest
  */
-const emptyBuildPathFiles = function(buildPath, manifest) {
+function emptyBuildPathFiles(buildPath, manifest) {
     fs.stat(manifest, function(err, stat) {
         if (! err) {
             manifest = JSON.parse(fs.readFileSync(manifest));
@@ -113,12 +113,12 @@ const emptyBuildPathFiles = function(buildPath, manifest) {
  * @param {string} src
  * @param {string} buildPath
  */
-const copyMaps = function(src, buildPath) {
+function copyMaps(src, buildPath) {
     src.forEach(file => {
         // We'll first get any files from the src
         // array that have companion .map files.
 
-        glob(file, {}, function(error, files) {
+        glob(file, {}, function (error, files) {
             if (error) return;
 
             files
@@ -137,7 +137,7 @@ const copyMaps = function(src, buildPath) {
 /**
  * Load the required Gulp plugins on demand.
  */
-const loadPlugins = function () {
+function loadPlugins() {
     fs = require('fs');
     del = require('del');
     glob = require('glob');

@@ -12,7 +12,7 @@ import Flixir from './../';
  |
  */
 
-gulp.task('tdd', function() {
+gulp.task('tdd', function () {
     new Flixir.Log.message('Watching for tests...');
 
     Flixir.tasks

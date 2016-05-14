@@ -14,7 +14,7 @@ const config = Flixir.config;
  |
  */
 
-Flixir.extend('phpUnit', function(src, command) {
+Flixir.extend('phpUnit', function (src, command) {
     runTests(
         'PHPUnit',
         src || (config.testing.phpUnit.path + '/**/*Test.php'),

@@ -1,7 +1,5 @@
-import gulp from 'gulp';
 import Flixir from './../';
 
-const $ = Flixir.Plugins;
 const config = Flixir.config;
 let gutil;
 let buffer;
@@ -21,12 +19,12 @@ let bundle;
  |
  */
 
-Flixir.extend('browserify', function(src, output, baseDir, options) {
+Flixir.extend('browserify', function (src, output, baseDir, options) {
     const paths = prepGulpPaths(src, baseDir, output);
 
     loadPlugins();
 
-    new Flixir.Task('browserify', function() {
+    new Flixir.Task('browserify', function (gulp, $) {
         const stream = config.js.browserify.watchify.enabled
             ? watchifyStream
             : browserifyStream;
@@ -73,7 +71,7 @@ Flixir.extend('browserify', function(src, output, baseDir, options) {
  * @param  {string|null}  output
  * @return {GulpPaths}
  */
-const prepGulpPaths = function(src, baseDir, output) {
+function prepGulpPaths(src, baseDir, output) {
     return new Flixir.GulpPaths()
         .src(src, baseDir || config.get('assets.js.folder'))
         .output(output || config.get('public.js.outputFolder'), 'bundle.js');
@@ -84,7 +82,7 @@ const prepGulpPaths = function(src, baseDir, output) {
  *
  * @param {object} data
  */
-const browserifyStream = function(data) {
+function browserifyStream(data) {
     const stream = browserify(data.paths.src.path, data.options);
 
     config.js.browserify.transformers.forEach(transformer => {
@@ -111,7 +109,7 @@ const browserifyStream = function(data) {
  *
  * @param {object} data
  */
-const watchifyStream = function(data) {
+function watchifyStream(data) {
     const browserify = watchify(
         browserifyStream(data),
         config.js.browserify.watchify.options
@@ -127,7 +125,7 @@ const watchifyStream = function(data) {
 /**
  * Load the required Gulp plugins on demand.
  */
-const loadPlugins = function () {
+function loadPlugins() {
     browserify = require('browserify');
     watchify = require('watchify');
     gutil = require('gulp-util');

@@ -14,7 +14,7 @@ const config = Flixir.config;
  |
  */
 
-Flixir.extend('phpSpec', function(src, command) {
+Flixir.extend('phpSpec', function (src, command) {
     runTests(
         'PHPSpec',
         src || (config.testing.phpSpec.path + '/**/*Spec.php'),

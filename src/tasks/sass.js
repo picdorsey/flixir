@@ -14,10 +14,10 @@ const config = Flixir.config;
  |
  */
 
-const gulpTask = function(src, output, options) {
+const gulpTask = function (src, output, options) {
     const paths = prepGulpPaths(src, output);
 
-    new Flixir.Task('sass', function() {
+    new Flixir.Task('sass', function () {
         return compile({
             name: 'Sass',
             compiler: require('gulp-sass'),
@@ -32,13 +32,13 @@ const gulpTask = function(src, output, options) {
 };
 
 
-Flixir.extend('sass', function() {
+Flixir.extend('sass', function () {
     gulpTask.apply(this, arguments);
 });
 
 
 // Deprecated. Only for backward compatibility.
-Flixir.extend('rubySass', function() {
+Flixir.extend('rubySass', function () {
     gulpTask.apply(this, arguments);
 });
 
@@ -49,7 +49,7 @@ Flixir.extend('rubySass', function() {
  * @param  {string|null}  output
  * @return {GulpPaths}
  */
-const prepGulpPaths = function(src, output) {
+const prepGulpPaths = function (src, output) {
     return new Flixir.GulpPaths()
         .src(src, config.get('assets.css.sass.folder'))
         .output(output || config.get('public.css.outputFolder'), 'app.css');

@@ -15,8 +15,10 @@ const $ = Flixir.Plugins;
  |
  */
 
-gulp.task('watch', function() {
+gulp.task('watch', () => {
     initBrowserify();
+
+    Flixir.hooks.watch.forEach(hook => hook());
 
     Flixir.tasks.forEach(task => {
         const batchOptions = Flixir.config.batchOptions;
@@ -32,7 +34,7 @@ gulp.task('watch', function() {
 /**
  * Determine if Browserify is included in the list.
  */
-const initBrowserify = function() {
+function initBrowserify() {
     if (Flixir.tasks.has('browserify')) {
         Flixir.config.js.browserify.watchify.enabled = true;
 

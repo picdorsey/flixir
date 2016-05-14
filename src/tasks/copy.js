@@ -1,7 +1,4 @@
-import gulp from 'gulp';
 import Flixir from './../';
-
-const $ = Flixir.Plugins;
 
 /*
  |----------------------------------------------------------------
@@ -14,10 +11,10 @@ const $ = Flixir.Plugins;
  |
  */
 
-Flixir.extend('copy', function(src, output) {
+Flixir.extend('copy', function (src, output) {
     const paths = new Flixir.GulpPaths().src(src).output(output);
 
-    new Flixir.Task('copy', function() {
+    new Flixir.Task('copy', function (gulp, $) {
         this.log(paths.src, paths.output);
 
         return (

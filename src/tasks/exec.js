@@ -1,4 +1,3 @@
-import gulp from 'gulp';
 import Flixir from './../';
 
 /*
@@ -12,8 +11,8 @@ import Flixir from './../';
  |
  */
 
-Flixir.extend('exec', function(command, watcher) {
-    const task = new Flixir.Task('exec', function() {
+Flixir.extend('exec', function (command, watcher) {
+    const task = new Flixir.Task('exec', function (gulp, $) {
         Flixir.Log
             .heading('Triggering Command...')
             .message(command);

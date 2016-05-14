@@ -15,10 +15,10 @@ const config = Flixir.config;
  |
  */
 
-Flixir.extend('scripts', function(scripts, output, baseDir) {
+Flixir.extend('scripts', function (scripts, output, baseDir) {
     const paths = prepGulpPaths(scripts, baseDir, output);
 
-    new Flixir.Task('scripts', function() {
+    new Flixir.Task('scripts', function () {
         return gulpTask.call(this, paths);
     })
     .watch(paths.src.path)
@@ -26,10 +26,10 @@ Flixir.extend('scripts', function(scripts, output, baseDir) {
 });
 
 
-Flixir.extend('scriptsIn', function(baseDir, output) {
+Flixir.extend('scriptsIn', function (baseDir, output) {
     const paths = prepGulpPaths('**/*.js', baseDir, output);
 
-    new Flixir.Task('scriptsIn', function() {
+    new Flixir.Task('scriptsIn', function () {
         return gulpTask.call(this, paths);
     })
     .watch(paths.src.path)
@@ -37,10 +37,10 @@ Flixir.extend('scriptsIn', function(baseDir, output) {
 });
 
 
-Flixir.extend('babel', function(scripts, output, baseDir, options) {
+Flixir.extend('babel', function (scripts, output, baseDir, options) {
     const paths = prepGulpPaths(scripts, baseDir, output);
 
-    new Flixir.Task('babel', function() {
+    new Flixir.Task('babel', function () {
         const babelOptions = options || config.js.babel.options;
 
         return gulpTask.call(this, paths, babelOptions);
@@ -55,7 +55,7 @@ Flixir.extend('babel', function(scripts, output, baseDir, options) {
  * @param {GulpPaths}   paths
  * @param {object|null} babel
  */
-const gulpTask = function(paths, babel) {
+function gulpTask (paths, babel) {
     this.log(paths.src, paths.output);
 
     return (
@@ -83,7 +83,7 @@ const gulpTask = function(paths, babel) {
  * @param  {string|null}  output
  * @return {GulpPaths}
  */
-const prepGulpPaths = function(src, baseDir, output) {
+function prepGulpPaths(src, baseDir, output) {
     return new Flixir.GulpPaths()
         .src(src, baseDir || config.get('assets.js.folder'))
         .output(output || config.get('public.js.outputFolder'), 'all.js');

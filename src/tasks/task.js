@@ -1,4 +1,3 @@
-import gulp from 'gulp';
 import Flixir from './../';
 
 /*
@@ -12,10 +11,8 @@ import Flixir from './../';
  |
  */
 
-Flixir.extend('task', function(name, watcher) {
-    const task = new Flixir.Task('task', () => gulp.start(name));
+Flixir.extend('task', (name, watcher) => {
+    const task = new Flixir.Task('task', (gulp) => gulp.start(name));
 
-    if (watcher) {
-        task.watch(watcher);
-    }
+    watcher && task.watch(watcher);
 });
