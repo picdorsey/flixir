@@ -1,8 +1,4 @@
 import p from 'path';
-import gutils from 'gulp-util';
-
-const production = gutils.env.production ||
-                   process.env.NODE_ENV === 'production';
 
 /*
  |----------------------------------------------------------------
@@ -10,12 +6,8 @@ const production = gutils.env.production ||
  |----------------------------------------------------------------
  |
  | This file contains the proper paths and options for each and
- | and every Gulp task that Flixir wraps up. To override any
- | setting, reference Flixir.config.* from your Gulpfile.
- |
- | Alternatively you may create an Flixir.json file within your
- | project root. As JSON, modify any settings contained here
- | and they'll take precedence over these defaults. Easy!
+ | and every Gulp task that Elixir wraps up. To override any
+ | setting, reference elixir.config.* from your Gulpfile.
  |
  */
 
@@ -26,13 +18,13 @@ const config = {
      | Production Mode
      |----------------------------------------------------------------
      |
-     | Flixir will trigger certain actions, dependent upon this flag.
+     | Elixir will trigger certain actions, dependent upon this flag.
      | You may enable this mode by triggering "gulp --production",
      | enabling things like CSS and JS minification. EasyPeasy!
      |
      */
 
-    production,
+    production: Elixir.inProduction,
 
     /*
      |----------------------------------------------------------------
@@ -91,13 +83,25 @@ const config = {
      | Notifications
      |----------------------------------------------------------------
      |
-     | As a convenience, Flixir will, when available, automatically
+     | As a convenience, Elixir will, when available, automatically
      | display OS notifications upon the completion of any task.
      | But of course you're free to disable this, if needed.
      |
      */
 
     notifications: true,
+
+    /*
+     |----------------------------------------------------------------
+     | Log Muted
+     |----------------------------------------------------------------
+     |
+     | As a convenience, Elixir will, when available, automatically
+     | display OS log upon the completion of any task.
+     | But of course you're free to disable this, if needed.
+     |
+     */
+    muted: process.argv[1].indexOf('bin/_mocha') > -1,
 
     /*
      |----------------------------------------------------------------
@@ -110,7 +114,7 @@ const config = {
      |
      */
 
-    sourcemaps: ! gutils.env.production,
+    sourcemaps: ! Elixir.inProduction,
 
     /*
      |----------------------------------------------------------------
@@ -162,7 +166,7 @@ const config = {
          | CSS3 Autoprefixing
          |----------------------------------------------------------------
          |
-         | When working with any form of CSS, Flixir automatically runs
+         | When working with any form of CSS, Elixir automatically runs
          | your file through a CSS autoprefixer, which automatically
          | adds or removes vendor-specific CSS3 prefixes. Useful!
          |
@@ -173,7 +177,7 @@ const config = {
 
             // https://www.npmjs.com/package/gulp-autoprefixer#api
             options:  {
-                browsers: ['last 2 versions'],
+                browsers: ['> 1%'],
                 cascade: false
             }
         },
@@ -208,13 +212,33 @@ const config = {
         sass: {
             folder: 'scss',
 
+            search: '/**/*.+(sass|scss)',
+
             // https://github.com/sass/node-sass#options
             pluginOptions: {
-                outputStyle: production
-                    ? 'compressed'
-                    : 'nested',
+                outputStyle: Elixir.inProduction ? 'compressed' : 'nested',
                 precision: 10
             }
+        },
+
+        /*
+         |----------------------------------------------------------------
+         | Less Compilation
+         |----------------------------------------------------------------
+         |
+         | Gone are the days of researching how to call Less on a given
+         | folder. Simply run `mix.less('file.less')` and you're all
+         | set. This object sets the folder name and plugin opts.
+         |
+         */
+
+        less: {
+            folder: 'less',
+
+            search: '/**/*.less',
+
+            // https://github.com/plus3network/gulp-less#options
+            pluginOptions: {}
         }
     },
 
@@ -248,24 +272,6 @@ const config = {
 
         /*
          |----------------------------------------------------------------
-         | Babel Compilation
-         |----------------------------------------------------------------
-         |
-         | Think of Babel as a compiler for next-generation JavaScript.
-         | If you'd like to make use of ES6 - or even ES7 features -
-         | in new apps, we make it a cinch right from the get go.
-         |
-         */
-
-        babel: {
-            // https://www.npmjs.com/package/gulp-babel#babel-options
-            options: {
-                presets: ['es2015', 'react']
-            }
-        },
-
-        /*
-         |----------------------------------------------------------------
          | UglifyJS Parser/Compressor/Beautifier
          |----------------------------------------------------------------
          |
@@ -278,63 +284,8 @@ const config = {
         uglify: {
             options: {
                 compress: {
-                    drop_console: true
+                    drop_console: Elixir.inProduction
                 }
-            }
-        },
-
-        /*
-         |----------------------------------------------------------------
-         | Browserify Compilation
-         |----------------------------------------------------------------
-         |
-         | Browserify allows you to pull in Node modules in the browser!
-         | Generally a pain to get up and running, Flixir offers many
-         | sensible defaults to get you up to speed super quickly.
-         |
-         */
-
-        browserify: {
-            // https://www.npmjs.com/package/browserify#usage
-            options: {
-                cache: {},
-                packageCache: {}
-            },
-
-            plugins: [],
-
-            externals: [],
-
-            transformers: [
-                {
-                    name: 'babelify',
-
-                    // https://www.npmjs.com/package/gulp-babel#babel-options
-                    options: {
-                        presets: ['es2015', 'react']
-                    }
-                },
-
-                {
-                    name: 'partialify',
-
-                    // https://www.npmjs.com/package/partialify
-                    options: {}
-                },
-
-                {
-                    name: 'vueify',
-
-                    // https://github.com/vuejs/vueify#usage
-                    options: {}
-                }
-            ],
-
-            watchify: {
-                enabled: false,
-
-                // https://www.npmjs.com/package/watchify#usage
-                options: {}
             }
         }
     },
@@ -353,7 +304,9 @@ const config = {
          */
 
         phpUnit: {
-            path: 'tests'
+            path: 'tests',
+            search: '/**/*Test.php',
+            command: p.normalize('vendor/bin/phpunit') + ' --verbose'
         },
 
         /*
@@ -368,7 +321,9 @@ const config = {
          */
 
         phpSpec: {
-            path: 'spec'
+            path: 'spec',
+            search: '/**/*Spec.php',
+            command: p.normalize('vendor/bin/phpspec') + ' run'
         }
     },
 
@@ -393,7 +348,7 @@ const config = {
      |----------------------------------------------------------------
      |
      | Want to have your browser refresh instantly upon changing a bit
-     | of Sass or modifying a view? With Flixir, it has never been
+     | of Sass or modifying a view? With Elixir, it has never been
      | easier. This contains default options for the extension.
      |
      */
@@ -405,8 +360,23 @@ const config = {
         server: {
             baseDir: 'public'
         }
-    }
+    },
 
+    /*
+     |----------------------------------------------------------------
+     | Watch
+     |----------------------------------------------------------------
+     |
+     | Configure how your filesystem is monitored for changes. This
+     | modifies the behavior of any task using "watch."
+     |
+     */
+
+    watch: {
+        // https://www.npmjs.com/package/gulp-watch/#options
+        interval: 1000,
+        usePolling: true
+    }
 };
 
 /**

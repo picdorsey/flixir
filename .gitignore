@@ -1,6 +1,6 @@
 .idea/
 node_modules/
 npm-debug.log
-
-flixir-test-app/public
+todo.txt
 dist/
+*.sublime-*

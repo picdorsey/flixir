@@ -1,81 +1,51 @@
-import fs from 'fs';
-import _ from 'underscore';
-import gutils from 'gulp-util';
+global.gulp = require('gulp');
+global.parse = require('parse-filepath');
+
+let GulpBuilder = require('./tasks/GulpBuilder').default;
+
 
 /**
- * Flixir is a wrapper around Gulp.
+ * Elixir is a wrapper around Gulp.
  *
  * @param {Function} recipe
  */
-const Flixir = function(recipe) {
-    // Perform any last-minute initializations.
+global.Elixir = recipe => {
+    // 1. Perform any last-minute initialization.
     init();
 
-    // Load all of Flixir's task definitions.
-    require('require-dir')('./tasks');
+    // 2. Load all available Elixir tasks.
+    require('./bootstrap/LoadExtensions');
 
-    // Load the user's Gulpfile recipe.
-    recipe(Flixir.mixins);
+    // 3. Process the user's Gulpfile recipe.
+    recipe(Elixir.mixins);
 
-    // And run their chosen tasks.
-    Flixir.tasks.forEach(task => task.toGulp());
+    // 4. Generate the necessary Gulp tasks.
+    Elixir.tasks.forEach(
+        task => GulpBuilder.fromElixirTask(task)
+    );
+
+    Elixir.hooks.ready.forEach(hook => hook());
 };
 
-Flixir.mixins       = {};
-Flixir.isWatching   = () => gutils.env._.indexOf('watch') > -1;
-Flixir.Log          = require('./Logger').default;
-Flixir.GulpPaths    = require('./GulpPaths').default;
-Flixir.config       = require('./Config').default;
-Flixir.Plugins      = require('gulp-load-plugins')();
-Flixir.Task         = require('./Task').default(Flixir);
-Flixir.tasks        = new (require('./TaskCollection').default)();
 
-Flixir.hooks   = { before: [], watch: [] };
-Flixir.onWatch = func => Flixir.hooks.watch.push(func);
-Flixir.before  = func => Flixir.hooks.before.push(func);
+[
+    './bootstrap/SetDependencies',
+    './bootstrap/EnableExtension',
+    './bootstrap/SetHooks'
+]
+.forEach(bootstrapper => require(bootstrapper));
 
-/**
- * Register a new task with Flixir.
- *
- * @param {string}   name
- * @param {Function} callback
- */
-Flixir.extend = function(name, callback) {
-    Flixir.mixins[name] = function() {
-        callback.apply(this, arguments);
-
-        return this.mixins;
-    }.bind(this);
-};
-
-/**
- * Allow for config overrides, via an Flixir.json file.
- *
- * @param {string} file
- */
-Flixir.setDefaultsFrom = function(file) {
-    let overrides;
-
-    if (fs.existsSync(file)) {
-        overrides = JSON.parse(fs.readFileSync(file, 'utf8'));
-
-        _.mixin({
-            deepExtend: require('underscore-deep-extend')(_)
-        });
-
-        _.deepExtend(Flixir.config, overrides);
-    }
-}('Flixir.json');
 
 /**
  * Perform any last-minute initializations.
  */
-const init = function () {
-    if (! Flixir.config.notifications) {
+function init() {
+    if (! Elixir.config.notifications) {
         process.env.DISABLE_NOTIFIER = true;
     }
 
-    Flixir.Notification = require('./Notification').default;
+    Elixir.Notification = require('./Notification').default;
 };
 
-module.exports = Flixir;
+
+module.exports = Elixir;

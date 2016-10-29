@@ -1,12 +1,12 @@
 import notify from 'gulp-notify';
 
-export default class Notification  {
+class Notification {
 
     /**
      * Create a new Notification instance.
      */
     constructor() {
-        this.title = 'Flixir';
+        this.title = 'Picdorsey Elixir';
 
         // If an argument is provided, then we'll
         // assume they want to show a message.
@@ -15,12 +15,15 @@ export default class Notification  {
         }
     }
 
+
     /**
      * Display a notification.
      *
      * @param {string} message
      */
     message(message) {
+        notify.logLevel(0);
+
         return notify({
             title: this.title,
             message: message,
@@ -28,6 +31,7 @@ export default class Notification  {
             onLast: true
         });
     }
+
 
     /**
      * Display an error notification.
@@ -48,19 +52,21 @@ export default class Notification  {
         console.log(e);
     }
 
+
     /**
      * Display a notification for passed tests.
      *
      * @param {string} framework
      */
-    forPassedTests(framework) {
+    static forPassedTests(framework) {
         return notify({
             title: 'Green!',
-            message: 'Your ' + framework + ' tests passed!',
-            icon: __dirname + '/../icons/pass.png',
+            message: `Your ${framework} tests passed!`,
+            icon: `${__dirname}/../icons/pass.png`,
             onLast: true
         });
     }
+
 
     /**
      * Display a notification for failed tests.
@@ -68,12 +74,15 @@ export default class Notification  {
      * @param {object} e
      * @param {string} framework
      */
-    forFailedTests(e, framework) {
+    static forFailedTests(e, framework) {
         return notify.onError({
             title: 'Red!',
-            message: 'Your ' + framework + ' tests failed!',
-            icon: __dirname + '/../icons/fail.png',
+            message: `Your ${framework} tests failed!`,
+            icon: `${__dirname}/../icons/fail.png`,
             onLast: true
         })(e);
     }
 }
+
+
+export default Notification;

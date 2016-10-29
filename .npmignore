@@ -1,2 +1,7 @@
 src/
-flixir-test-app/
+elixir-test-app/
+.idea/
+*.log
+todo.txt
+*.sublime-*
+
