@@ -1,6 +1,6 @@
 {
   "name": "flixir",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Frunt Flixir",
   "main": "dist/index.js",
   "scripts": {
@@ -37,7 +37,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-rev": "^7.0.0",
     "gulp-rev-replace": "^0.4.3",
-    "gulp-sass": "^2.3.1",
+    "gulp-sass": "^2.3.2",
     "gulp-shell": "^0.5.2",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.3",
@@ -46,7 +46,7 @@
     "laravel-elixir-coffeescript": "^1.0.2",
     "laravel-elixir-rollup-official": "^1.0.4",
     "laravel-elixir-stylus": "^2.0.2",
-    "laravel-elixir-vue": "^0.1.4",
+    "laravel-elixir-vue-2": "^0.3.0",
     "laravel-elixir-webpack-official": "^1.0.1",
     "parse-filepath": "^1.0.1",
     "path": "^0.12.7",

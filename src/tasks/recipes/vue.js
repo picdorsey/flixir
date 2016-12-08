@@ -3,13 +3,13 @@ Elixir.ready(function () {
     // ensure we are using the version of Vue that supports templates
     resolve: {
       alias: {
-        vue: 'vue/dist/vue.js'
-      }
+        vue: 'vue/dist/vue.common.js'
+      },
+      extensions: ['.js', '.vue']
     },
-    // use buble loader since it is the default in Elixir
     vue: {
-      loaders: {
-        js: 'buble-loader'
+      buble: {
+        objectAssign: 'Object.assign'
       }
     },
     module: {
